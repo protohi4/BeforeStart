@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">BeforeStart</string>
     <string name="no_internet">No internet connection\nNo saved data</string>
+    <string name="locations">Google Map</string>
 </resources>

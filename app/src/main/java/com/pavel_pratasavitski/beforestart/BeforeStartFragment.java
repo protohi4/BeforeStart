@@ -1,22 +1,21 @@
 package com.pavel_pratasavitski.beforestart;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
@@ -48,6 +47,7 @@ public class BeforeStartFragment extends Fragment {
     public void onCreate(Bundle SavedInstanceState) {
         super.onCreate(SavedInstanceState);
         downloadPhotos();
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -62,6 +62,24 @@ public class BeforeStartFragment extends Fragment {
         setupAdapter(new MyAdapter(mPhotos));
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.main_window_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.google_map_view:
+                Intent intent = new Intent(getActivity(), MapActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void downloadPhotos() {
@@ -110,10 +128,9 @@ public class BeforeStartFragment extends Fragment {
         public void bindItem(Photo photo) {
             mPhoto = photo;
             mNameTextView.setText(mPhoto.getTitle());
-            Picasso.with(getActivity())
+            Glide.with(getActivity().getApplicationContext())
                     .load(mPhoto.getUrl())
-                    .resize(120, 200)
-                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .into(mImageView);
         }
 

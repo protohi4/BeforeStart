@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -54,8 +56,10 @@ public class DescriptiveFragment extends Fragment {
         mName.setText(mPhoto.getTitle());
 
         mImageView = v.findViewById(R.id.detail_image_view);
-        Picasso.with(getActivity()).load(mPhoto.getUrl())
-                .into(mImageView);
+        Glide.with(getActivity().getApplicationContext())
+                .load(mPhoto.getUrl())
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .into(mImageView);
 
         return v;
     }
